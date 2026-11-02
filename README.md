@@ -13,7 +13,7 @@ Exercício autoral de estudo, sem vínculo com a Red Hat e sem reprodução de p
 - Privilégios administrativos efetivos: chamar-se `admin` não comprova permissões.
   MachineConfig pode causar drain, reinicializações e degradação do MCO.
 - Uma CLI com o binário `oc` compatível com 4.22 e acesso à API do cluster.
-- Conta GitHub e um fork público seu, ou Git/HTTP em uma VM externa ao cluster.
+- Um repositório Git público com acesso de escrita, somente para seus manifests.
 - Um usuário OAuth real para a prova e outro fora do grupo do exercício para o teste
   negativo. `oc create user` sozinho não cria credenciais autenticáveis.
 
@@ -31,27 +31,29 @@ um ambiente que forneça suas dependências. Veja [a preparação](docs/01-prepa
 
 ## Começar
 
-1. Faça **Fork** deste repositório na sua conta, preferencialmente só de `main`.
-   Cada estudante usa seu próprio fork e cluster; não publique respostas no upstream.
-2. Clone seu fork e crie o arquivo local de configuração:
+1. Clone este repositório para consultar o material e executar os auxiliares:
 
    ```bash
-   git clone https://github.com/SEU-USUARIO/ex380-lab.git
+   git clone https://github.com/rossettimateus/ex380-lab.git
    cd ex380-lab
    cp lab.env.example lab.env
    ```
 
-3. Siga [a preparação completa](docs/01-preparacao.md). Preencha `lab.env` com a API,
-   worker, usuários e URLs **do seu ambiente**; os exemplos não concedem acesso a um cluster.
-4. Só após os checks passarem, abra [o enunciado](docs/02-prova.md). Tempo sugerido:
+2. Siga [a preparação completa](docs/01-preparacao.md), incluindo
+   [a configuração do seu repositório de manifests](docs/00-repositorio-do-aluno.md).
+   Ele recebe **somente os manifests que você escrever**, sem fork ou cópia do kit.
+3. Preencha `lab.env`: `REPO_URL` aponta para seu repo de manifests; `HTTP_BASE`
+   já aponta para os arquivos deste repositório e deve ser mantido.
+4. Após os checks passarem, abra [o enunciado](docs/02-prova.md). Tempo sugerido:
    90 minutos de configuração, excluindo instalação e reboots; não é tempo oficial.
-5. Edite **`machineconfigs/`**, faça commit e publique no `main` do seu fork.
+5. Edite `work/candidate/machineconfigs/`, faça commit e publique no `main` do
+   seu repo de manifests. O caminho observado pelo Argo CD continua `machineconfigs`.
 6. Execute [a validação](docs/03-validacao.md). Depois, opcionalmente, faça
    [a falha controlada](docs/04-falha-controlada.md). Consulte também
    [diagnóstico](docs/05-troubleshooting.md) e [recuperação e limpeza](docs/06-recuperacao-limpeza.md).
 
-No GitHub, o clone atual é seu checkout de trabalho. Não rode `prep/serve.sh` nem
-crie outro checkout em `work/candidate/`: esses caminhos são do modo VM auxiliar.
+O clone deste kit e o repo de manifests são diretórios Git separados. Não troque
+seus remotes nem publique as respostas no repositório do material.
 
 ## Preparar com ajuda de uma IA
 
@@ -71,22 +73,26 @@ login ou informações faltantes; não envie tokens ou senhas no chat.
 ## Git e arquivos HTTPS, sem servidor próprio
 
 ```text
-Seu fork / main / machineconfigs/ -> Argo CD -> MachineConfig -> MCO -> worker lab
-Seu fork / main / config/         -> HTTPS raw --------------------> download no node
+Seu repo / main / machineconfigs/ -> Argo CD -> MachineConfig -> MCO -> worker lab
+rossettimateus/ex380-lab / config/ -> HTTPS raw --------------------> download no node
 ```
 
-Não precisa de aplicação nem GitHub Pages. Use seu fork público:
+Enunciado, instruções, scripts e payloads permanecem neste repositório. Seu repo
+é apenas o destino dos manifests que você criar; não copie o conteúdo do kit.
 
 ```text
-REPO_URL=https://github.com/SEU-USUARIO/ex380-lab.git
-HTTP_BASE=https://raw.githubusercontent.com/SEU-USUARIO/ex380-lab/main
+REPO_URL=https://github.com/SEU-USUARIO/ex380-meus-manifests.git
+HTTP_BASE=https://raw.githubusercontent.com/rossettimateus/ex380-lab/main
 ```
 
-Os payloads ficam em `HTTP_BASE/config/site.conf` e `HTTP_BASE/config/banner.txt`.
-Os arquivos em `http/` são as referências locais usadas pelos verificadores e devem
-ser idênticos aos de `config/`. Preserve os payloads durante o exercício.
-HTTPS substitui o HTTP da alternativa com VM. Não precisa manter o computador ligado;
-mantenha o fork público durante todo o exercício e a recuperação.
+Os nodes baixam os arquivos diretamente pelos endereços:
+
+- https://raw.githubusercontent.com/rossettimateus/ex380-lab/main/config/site.conf
+- https://raw.githubusercontent.com/rossettimateus/ex380-lab/main/config/banner.txt
+
+As cópias em `http/` servem apenas à comparação local pelos verificadores.
+Não é necessário servidor próprio, aplicação ou GitHub Pages. Mantenha seu repo
+de manifests acessível durante o exercício e a recuperação.
 
 ## Estrutura e limites
 
@@ -94,10 +100,11 @@ mantenha o fork público durante todo o exercício e a recuperação.
 |---|---|
 | `docs/` | Preparação, enunciado, validação e recuperação |
 | `AGENTS.md` e `agent.md` | Preparação por agentes de IA |
-| `machineconfigs/` | Você escreve os dois manifests aqui |
+| `work/candidate/machineconfigs/` | Checkout local do seu repo de manifests (ignorado pelo kit) |
+| `git-seed/` | Esqueleto inicial sem respostas |
 | `config/` | Payloads publicados por HTTPS raw |
 | `http/` | Payloads de referência para comparação local |
-| `prep/` | Pool dedicado e alternativa de servidor externo |
+| `prep/` | Preparação do pool dedicado |
 | `scripts/` | Preflight, validação, evidências e falha local opcional |
 | `tests/` | Testes locais, sem acesso ao cluster |
 | `lab.env.example` | Modelo sem dados de um cluster real |

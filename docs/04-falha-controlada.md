@@ -5,19 +5,19 @@ Faça somente após concluir o caminho feliz, salvar o commit bom e executar o v
 ## A. Registrar e limitar
 
 1. Confirme API, único worker de `lab`, ausência de workload real e saúde dos demais pools.
-2. Salve o SHA bom: `git rev-parse HEAD`. Registre também currentConfig/desiredConfig do node e o rendered atual do MCP.
+2. Salve o SHA bom: `git -C work/candidate rev-parse HEAD`. Registre também currentConfig/desiredConfig do node e o rendered atual do MCP.
 3. Confirme auto-sync desativado. Pause **somente** `lab`: `oc patch mcp lab --type=merge -p '{"spec":{"paused":true}}'`. Pausa limita rollout; não impede renderização nem protege contra uma atualização já iniciada. Por isso comece de um estado convergido.
 
 ## B. Alteração só no Git local
 
 ```bash
-python3 scripts/break-source.py machineconfigs/99-lab-site.yaml
-git diff
+python3 scripts/break-source.py work/candidate/machineconfigs/99-lab-site.yaml
+git -C work/candidate diff
 ```
 
 O script remove exclusivamente o esquema `http://` ou `https://` do primeiro arquivo de `99-lab-site`, verifica nome/papel/caminho e não acessa o cluster. Adapte o nome local se seu arquivo tiver outro nome. `99-lab-banner` deve continuar intacto.
 
-Antes do push, tente `oc apply --dry-run=server -f machineconfigs/99-lab-site.yaml`. Guarde a resposta. **Dry-run aceito não prova que Ignition/MCO renderiza ou aplica.** Se for rejeitado, o objetivo de observar a primeira camada de rejeição já foi atingido; não tente contorná-la.
+Antes do push, tente `oc apply --dry-run=server -f work/candidate/machineconfigs/99-lab-site.yaml`. Guarde a resposta. **Dry-run aceito não prova que Ignition/MCO renderiza ou aplica.** Se for rejeitado, o objetivo de observar a primeira camada de rejeição já foi atingido; não tente contorná-la.
 
 Se a API aceitar, faça commit dessa única alteração, push e uma sincronização manual. Não use prune. Aguarde a reconciliação e colete eventos, status da Application, condições de `lab`, logs do machine-config-controller e estado do node. `scripts/evidence.sh` pode ser usado, copiando a pasta para um nome novo antes de cada coleta.
 

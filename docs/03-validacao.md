@@ -1,6 +1,6 @@
 # Parte 3 — Validação
 
-No checkout do seu fork, obtenha o SHA final com `git rev-parse HEAD` e registre o valor completo em `EXPECTED_REVISION` no `lab.env`. Confirme que foi enviado: `git ls-remote origin refs/heads/main`. Isso evita aceitar um Synced de commit antigo.
+Na raiz do kit, obtenha o SHA final do repo de manifests com `git -C work/candidate rev-parse HEAD` e registre o valor completo em `EXPECTED_REVISION` no `lab.env`. Confirme que foi enviado: `git -C work/candidate ls-remote origin refs/heads/main`. Isso evita aceitar um Synced de commit antigo.
 
 Execute, com o administrador e na raiz do projeto:
 

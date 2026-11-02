@@ -62,62 +62,42 @@ necessário repeti-la a cada comando. Nome admin não comprova cluster-admin.
 
 ## 3. Git e payloads externos
 
-### Opção A: fork público no GitHub
+### Material e payloads: repositório central
 
-Faça fork e clone seu repositório. Confira o remote e use main:
+Use o clone de https://github.com/rossettimateus/ex380-lab.git para consultar o
+roteiro e executar os auxiliares. Não faça fork nem replique o conteúdo do kit.
+Os dois arquivos são servidos pelo próprio repositório, via HTTPS raw.
 
-```bash
-git remote -v
-git branch --show-current
-git ls-remote origin refs/heads/main
-cp lab.env.example lab.env
-```
+### Manifests: repo de escrita do aluno
 
-O clone atual é seu checkout. Não execute prep/serve.sh neste modo. Mantenha apenas
-.gitkeep em machineconfigs/ antes da prova e preserve config/site.conf e config/banner.txt,
-idênticos aos arquivos em http/. Não precisa de aplicação nem GitHub Pages.
+Siga [a configuração do repositório de manifests](00-repositorio-do-aluno.md).
+O checkout fica em work/candidate/ e recebe apenas machineconfigs/; o material
+continua neste kit. Configure identidade Git e autenticação de escrita no terminal.
+Se usar GitHub CLI, gh auth login permite autorizar pelo navegador sem enviar tokens
+à IA. Um endereço SSH sozinho não configura uma chave nem autentica a conta.
 
-Configure identidade Git e autenticação de escrita no terminal da estação. Se usar
-GitHub CLI, gh auth login permite autorizar pelo navegador sem enviar tokens ao chat.
-Um endereço SSH sozinho não configura uma chave nem autentica a conta.
-
-Preencha lab.env com valores reais, por exemplo:
+Preencha lab.env, na raiz do kit, com valores reais:
 
 ```text
 LAB_API=https://api.SEÚ-CLUSTER:6443
 LAB_NODE=SEU-WORKER-RHCOS
-HTTP_BASE=https://raw.githubusercontent.com/SEU-USUARIO/ex380-lab/main
-REPO_URL=https://github.com/SEU-USUARIO/ex380-lab.git
+HTTP_BASE=https://raw.githubusercontent.com/rossettimateus/ex380-lab/main
+REPO_URL=https://github.com/SEU-USUARIO/ex380-meus-manifests.git
 LAB_USER=SEU-USUARIO-OAUTH
 LAB_NEGATIVE_USER=SEU-USUARIO-NEGATIVO
 EXPECTED_REVISION=
 ```
 
-Troque também o nome do repo se seu fork tiver outro nome. HTTP_BASE não termina
-em /config. EXPECTED_REVISION fica vazio até seu commit final da prova. Não use
-variáveis shell, espaços no fim ou aspas especiais: os scripts leem pares literais.
-LAB_API deve corresponder ao servidor atual do oc. Não reutilize dados de outra pessoa.
+Mantenha HTTP_BASE acima, sem /config no final. REPO_URL é o destino dos seus
+manifests, e não o repositório do material. EXPECTED_REVISION fica vazio até seu
+commit final da prova. Os scripts leem valores literais; não use variáveis shell
+ou espaços no fim. LAB_API deve corresponder ao servidor atual do oc.
 
-Mantenha o fork público durante o exercício e a recuperação. Os nodes e pods precisam
-de DNS e saída HTTPS para GitHub e raw.githubusercontent.com. Não é necessário
-manter este computador ligado para hospedar arquivos. Não publique lab.env ou work/.
-
-### Opção B: VM auxiliar externa
-
-Se GitHub não for viável, disponibilize uma VM fora do cluster, acessível pela estação,
-todos os nodes e pods. Ela deve permanecer ligada, inclusive na recuperação. Não
-presuma que nodes remotos alcancem o IP privado do laptop. Não abra roteador, publique
-serviços ou crie recursos pagos sem autorização específica.
-
-Na raiz de uma cópia deste kit na VM, execute bash prep/serve.sh. O servidor fica
-em foreground e publica apenas os payloads e o bare Git em work/www, na porta 8080.
-Limite essa porta às redes do lab. Use HTTP_BASE=http://IP-REAL-DA-VM:8080 e
-REPO_URL=http://IP-REAL-DA-VM:8080/repos/ex380.git. Não use localhost, Pod ou DNS .svc.
-
-Neste modo, edite o checkout work/candidate/ e preserve seu remote local de escrita:
-Python http.server não recebe push HTTP. O hook post-update habilita clone por HTTP.
-Para editar de outra máquina, entre na VM por SSH. Os comandos Git das demais páginas
-se aplicam ao checkout work/candidate/ neste modo; scripts/ continuam na raiz do kit.
+Mantenha o repo de manifests público durante o exercício e a recuperação. Os nodes
+e pods precisam de DNS e saída HTTPS para GitHub e raw.githubusercontent.com.
+Se o acesso ao conteúdo central falhar, investigue a rede e registre o bloqueio;
+não substitua por cópias locais ou serviços no cluster. Não execute prep/serve.sh,
+não é necessário servidor próprio. Não publique lab.env, work/ ou credenciais.
 
 ## 4. OAuth e canal
 
@@ -205,7 +185,7 @@ usuários, localização privada de credenciais novas, canal, verificações exe
 limitações e forma de editar/publicar. Mantenha lab.env local com os dados vinculantes.
 
 Pronto significa ferramentas, identidades reais, Git/payloads externos acessíveis e
-pool/cluster estabilizados. No GitHub, trabalhe no clone atual e mantenha o fork público;
-na VM, mantenha servidor e VM ligados. Não instale GitOps, Argo CD, RBAC/grupo,
+pool/cluster estabilizados. Consulte o material neste clone, edite os manifests em
+work/candidate/ e mantenha o repo de manifests acessível. Não instale GitOps, Argo CD, RBAC/grupo,
 AppProject, Application ou os dois manifests, nem execute a falha controlada.
 Sem pendências, abra [02-prova.md](02-prova.md).

@@ -10,6 +10,9 @@
 
 Se o node já estava Degraded por drift, corrigir a URL pode não bastar. Compare os arquivos com a **currentConfig** efetivamente aplicada e os logs do MCD. Não copie arquivos aleatórios, altere currentConfig/desiredConfig ou crie `/run/machine-config-daemon-force` sem entender a divergência e a documentação aplicável. Para este lab descartável, se o node não recuperar com o retorno à configuração boa, guarde os logs e recrie o worker por seu mecanismo de provisionamento (ou recrie o cluster). Não incluí automação de destruição de máquinas, pois isso depende do provedor.
 
+Os commits, pushes e reversões destas instruções são feitos em work/candidate/,
+no repo de manifests do aluno, nunca no repo do material.
+
 ## Limpeza após recuperar a saúde
 
 A opção mais simples, ao terminar, é destruir **o cluster descartável** pelo mesmo mecanismo que o criou. Confirme recursos e custos remanescentes no provedor. Se quiser preservar o cluster de treinamento, siga esta ordem:
@@ -21,6 +24,6 @@ A opção mais simples, ao terminar, é destruir **o cluster descartável** pelo
 5. Só então remova MCP `lab`: `oc delete mcp lab`.
 6. Remova ArgoCD `lab`, aguarde seus componentes sumirem; exclua `lab-machineconfig-manager` (ClusterRoleBinding e ClusterRole) e o namespace `lab-gitops`. Remova o grupo `gitops-admins` somente se foi criado exclusivamente para este exercício.
 7. Remova `lab-gitops` da lista ARGOCD_CLUSTER_CONFIG_NAMESPACES da Subscription, preservando os demais valores. Se o Operator inteiro foi instalado apenas para este lab e nenhuma outra instância depende dele, desinstale pelo console (Subscription/CSV). Não exclua CRDs globais indiscriminadamente. A instância padrão pode ainda existir.
-8. Verifique todos os pools e o Machine Config Operator saudáveis. Se usar VM auxiliar, pare o servidor com Ctrl-C. No GitHub, mantenha o fork e os payloads disponíveis até terminar a recuperação. Remova apenas o diretório `work/` desta cópia do projeto se quiser descartar Git/payloads temporários; preserve evidências úteis. Apague a VM auxiliar se ela foi criada para esse fim.
+8. Verifique todos os pools e o Machine Config Operator saudáveis. Mantenha o repo de manifests do aluno acessível até terminar a recuperação; os payloads continuam no repositório central. Remova apenas o diretório `work/` desta cópia do projeto se quiser descartar Git/payloads temporários; preserve evidências úteis.
 
 O validador principal espera MCs e pool presentes, portanto deixa de ser o teste correto após limpeza. Na limpeza use o baseline, ausência dos arquivos e saúde dos pools remanescentes.

@@ -39,20 +39,23 @@ apague rendered configs, remova PDBs/taints ou use force files para simular conv
 
 ## Dados e hospedagem
 
-- Cada aluno usa seu fork e seu cluster. Confirme remote/main e acesso de escrita.
-  O checkout atual é onde ele trabalha, com manifests em machineconfigs/.
-- No GitHub, REPO_URL aponta para o fork e HTTP_BASE para
-  https://raw.githubusercontent.com/USUARIO/REPO/main, sem /config no final.
-  Não presuma conta, infraestrutura, autenticação ou API de exemplos.
+- Clone o material de https://github.com/rossettimateus/ex380-lab.git, sem fork.
+  Mantenha os remotes do kit. Prepare em work/candidate/ um Git separado, público,
+  autorizado pelo aluno, que receberá somente machineconfigs/ com as respostas dele.
+  Não copie enunciado, scripts, payloads ou o kit para esse repo.
+- REPO_URL aponta para o repo de manifests do aluno, branch main e path machineconfigs.
+  HTTP_BASE permanece https://raw.githubusercontent.com/rossettimateus/ex380-lab/main.
+  Não re-hospede os payloads em outro repo, VM, Pod, Service ou Route.
+  Siga docs/00-repositorio-do-aluno.md; não presuma autenticação de escrita.
 - Antes de publicar, confirme autorização para o repo e conteúdo concretos.
   Nunca faça commit de lab.env, work/, evidências, credenciais ou kubeconfigs.
-- Se faltar hospedagem, prepare localmente e peça infraestrutura/autenticação.
+- Se faltar o repo de manifests, prepare o esqueleto local e peça URL/autenticação.
   Não publique serviços, abra roteador ou crie recursos pagos sem autorização.
 - Git/HTTP ficam fora do cluster, acessíveis à estação, todos os nodes e pods
   durante reboots e recuperação. Não use Pod, Service ou Route como substitutos.
   Não presuma que nodes remotos alcancem IP privado do laptop.
 - Preserve config/site.conf e config/banner.txt, idênticos aos de http/.
-  No GitHub não rode serve.sh; o modo VM é uma alternativa separada.
+  Não rode serve.sh: os arquivos já são servidos pelo repositório central.
 - Grave lab.env local com valores reais e sem credenciais. EXPECTED_REVISION só
   recebe o SHA final após o aluno resolver a prova. Faça handoff em work/dados-da-prova.md.
 
