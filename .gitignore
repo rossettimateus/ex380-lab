@@ -1,0 +1,8 @@
+lab.env
+work/
+evidence/
+__pycache__/
+*.py[cod]
+*.kubeconfig
+.venv/
+.env
