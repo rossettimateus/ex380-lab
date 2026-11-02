@@ -12,8 +12,7 @@ Exercício autoral de estudo, sem vínculo com a Red Hat e sem reprodução de p
   SNO, compacto sem workers separados e Sandbox de namespace não atendem.
 - Privilégios administrativos efetivos: chamar-se `admin` não comprova permissões.
   MachineConfig pode causar drain, reinicializações e degradação do MCO.
-- Acesso ao cluster e ao Git a partir de um navegador e de um ambiente de terminal
-  de sua escolha, local ou remoto. O computador pessoal não precisa executar OpenShift.
+- Uma CLI com o binário `oc` compatível com 4.22 e acesso à API do cluster.
 - Conta GitHub e um fork público seu, ou Git/HTTP em uma VM externa ao cluster.
 - Um usuário OAuth real para a prova e outro fora do grupo do exercício para o teste
   negativo. `oc create user` sozinho não cria credenciais autenticáveis.
@@ -21,24 +20,14 @@ Exercício autoral de estudo, sem vínculo com a Red Hat e sem reprodução de p
 O perfil é GitOps `gitops-1.21` e Ignition 3.5.0. Confirme a versão efetiva pela API e
 a disponibilidade do canal. Este projeto não provisiona cluster ou recursos pagos.
 
-## Computador e ferramentas de acesso
+## Ferramentas auxiliares
 
-O laboratório **não exige um sistema operacional no computador pessoal**. Você pode
-usar Windows, macOS ou Linux e acessar o OpenShift remoto. Os componentes do exercício
-rodam no cluster; os payloads e o Git ficam no serviço externo escolhido.
+Para acessar o cluster pela CLI, use `oc`. Para editar e publicar seus manifests,
+use um editor e seu fluxo de trabalho Git habitual.
 
-Escolha onde executar as ferramentas de preparação e validação: no próprio computador
-ou em um terminal remoto com acesso à API e ao Git. Nesse ambiente, os scripts Python
-precisam de Python 3 e `oc`; Git e curl são usados nos passos correspondentes. PyYAML
-é usado somente pelo script opcional de falha. Os dois scripts `.sh` e a suíte de
-testes do kit precisam de Bash. Isso é uma dependência desses auxiliares, não do
-sistema operacional do aluno ou das cargas no OpenShift.
-
-No Windows, você pode usar ferramentas nativas nos passos compatíveis e um ambiente
-com Bash, como WSL ou um terminal remoto, para os `.sh`. Os exemplos de shell usam
-sintaxe POSIX; consulte [a preparação](docs/01-preparacao.md) para os ajustes no PowerShell.
-Não é necessário instalar um cluster local, trocar de sistema ou disponibilizar uma
-VM auxiliar quando usar GitHub para os arquivos externos.
+Os scripts deste kit usam Python 3 e `oc`; os arquivos `.sh` usam Bash. PyYAML é
+necessário somente para o script opcional de falha. Execute esses auxiliares em
+um ambiente que forneça suas dependências. Veja [a preparação](docs/01-preparacao.md).
 
 ## Começar
 

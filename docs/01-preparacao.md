@@ -5,51 +5,26 @@ enunciado. Execute os comandos na raiz do clone, salvo indicação contrária.
 
 ## 1. Ferramentas e sessão
 
-O sistema operacional do computador pessoal não é requisito do laboratório.
-Windows, macOS e Linux podem acessar o OpenShift remoto. Escolha um ambiente de
-terminal local ou remoto para os auxiliares; as ferramentas precisam estar nesse
-ambiente, sem obrigação de instalá-las todas no computador pessoal.
+Para acessar o cluster, tenha o binário `oc` compatível com 4.22 disponível em uma
+CLI com acesso à API. Obtenha a CLI pela página de ferramentas do console ou pela
+distribuição oficial da Red Hat.
 
-- `oc` compatível com 4.22: inspeção/administração pela API e chamadas dos scripts Python.
-- Git: clone, edição/publicação e conferência de revisão.
-- curl: verificações de conectividade; os testes dentro do cluster usam o curl da
-  imagem/host remoto, não o sistema operacional do computador pessoal.
-- Python 3: preflight, criação do pool e validação fornecidos pelo kit.
-- Bash: somente `prep/serve.sh`, `scripts/evidence.sh` e os testes locais do kit.
-- PyYAML: somente o script de falha opcional, depois de concluir a prova.
+Para editar e publicar manifests, use seu editor e fluxo Git habitual. Se optar
+pelos scripts de preparação e validação fornecidos, confira as dependências no
+ambiente onde eles serão executados:
 
-Obtenha oc pela página de ferramentas do console ou distribuição oficial da Red Hat,
-para a plataforma onde você vai executá-lo. Não presuma que qualquer pacote chamado
-oc seja a CLI correta. Instale ferramentas faltantes conforme esse ambiente, com a
-autorização necessária. O modo GitHub dispensa o servidor auxiliar e seu serve.sh.
+| Ferramenta | Uso nos auxiliares |
+|---|---|
+| Python 3 e `oc` | Preflight, criação do pool e validação |
+| Git | Clone, publicação e conferência de revisão |
+| curl | Verificações de conectividade |
+| Bash | Scripts `.sh` e suíte de testes do kit |
+| PyYAML | Script opcional de falha, após concluir a prova |
 
-Os exemplos de shell deste roteiro usam sintaxe POSIX. No Windows, use um terminal
-compatível, como WSL ou uma máquina remota, para os scripts Bash. Para comandos
-compatíveis com ferramentas nativas no PowerShell, use `python` se esse for o nome
-do executável instalado. As principais diferenças dos passos iniciais são:
-
-| Operação | Shell POSIX | PowerShell |
-|---|---|---|
-| Copiar o modelo | `cp lab.env.example lab.env` | `Copy-Item lab.env.example lab.env` |
-| Criar diretório | `mkdir -p evidence` | `New-Item -ItemType Directory -Force evidence` |
-| Criar venv opcional | `python3 -m venv .venv` | `python -m venv .venv` |
-| Usar o Python do venv | `.venv/bin/python` | `.venv\Scripts\python.exe` |
-
-Não é obrigatório ativar o venv: chame seu Python diretamente para instalar PyYAML
-e executar o script opcional. Isso evita depender da política de execução de scripts
-do PowerShell. Para inspecionar ferramentas, execute no ambiente escolhido:
-
-```text
-oc version --client
-git --version
-python3 --version
-curl --version
-```
-
-Substitua `python3` por `python` quando aplicável. No Windows, use `curl.exe` se
-`curl` resolver para um alias diferente. Não execute `.sh` diretamente no PowerShell.
-A suíte de testes cobre o ambiente descrito em TESTES.md; o kit não afirma que todos
-os auxiliares foram testados nativamente em cada sistema operacional.
+Os exemplos usam sintaxe de shell POSIX; adapte os comandos ao seu terminal.
+Use `python` ou `python3` conforme a instalação. Bash é necessário para executar
+os `.sh`, e não para usar o `oc`. As dependências dos auxiliares podem ficar em
+um terminal remoto. O modo GitHub dispensa o servidor de `prep/serve.sh`.
 
 Use a sessão do oc no ambiente de terminal escolhido. Se faltar autenticação, faça login no próprio terminal;
 não envie tokens ou senhas à IA. Inspecione sem alterar recursos:

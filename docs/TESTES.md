@@ -37,5 +37,4 @@ da falha não foram executados como parte da preparação. scripts/validate.py s
 para essa etapa posterior, depois que o aluno resolver a prova.
 
 A suíte não certifica execução nativa de todos os scripts em Windows ou macOS.
-Os `.sh` exigem Bash, que pode ser usado em um ambiente separado do computador
-pessoal. O acesso e a configuração do OpenShift remoto não exigem Linux na estação.
+Os `.sh` exigem Bash no ambiente em que forem executados.
