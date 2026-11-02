@@ -1,6 +1,8 @@
 # Verificação e limites
 
-Execute na raiz do clone, com Python 3, Git e Bash:
+Esta suíte de manutenção foi executada em ambiente com Python 3, Git e Bash.
+Ela não determina o sistema operacional necessário ao aluno. Execute na raiz do
+clone em um terminal que forneça essas ferramentas:
 
 ```bash
 python3 tests/test_preparation.py
@@ -33,3 +35,7 @@ A instalação do Operator, Argo CD, RBAC do exercício, sync, aplicação dos d
 MachineConfigs, reboot após esses manifests, validação final da prova e recuperação
 da falha não foram executados como parte da preparação. scripts/validate.py serve
 para essa etapa posterior, depois que o aluno resolver a prova.
+
+A suíte não certifica execução nativa de todos os scripts em Windows ou macOS.
+Os `.sh` exigem Bash, que pode ser usado em um ambiente separado do computador
+pessoal. O acesso e a configuração do OpenShift remoto não exigem Linux na estação.

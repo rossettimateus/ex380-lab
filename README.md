@@ -5,21 +5,40 @@ de um worker RHCOS. Você recebe o enunciado, os payloads e as ferramentas de pr
 e validação; escreve seus manifests por conta própria. **Não há gabarito.**
 Exercício autoral de estudo, sem vínculo com a Red Hat e sem reprodução de prova oficial.
 
-## Requisitos
+## Requisitos do ambiente de laboratório
 
 - Cluster OpenShift **4.22.x isolado e descartável**, com ao menos dois workers
   RHCOS separados do control plane. O roteiro de referência usa três control planes.
   SNO, compacto sem workers separados e Sandbox de namespace não atendem.
 - Privilégios administrativos efetivos: chamar-se `admin` não comprova permissões.
   MachineConfig pode causar drain, reinicializações e degradação do MCO.
-- Estação Linux, incluindo Pop!_OS, com `oc` 4.22, Git, Python 3 e curl.
-  PyYAML é necessário para o experimento opcional de falha.
+- Acesso ao cluster e ao Git a partir de um navegador e de um ambiente de terminal
+  de sua escolha, local ou remoto. O computador pessoal não precisa executar OpenShift.
 - Conta GitHub e um fork público seu, ou Git/HTTP em uma VM externa ao cluster.
 - Um usuário OAuth real para a prova e outro fora do grupo do exercício para o teste
   negativo. `oc create user` sozinho não cria credenciais autenticáveis.
 
 O perfil é GitOps `gitops-1.21` e Ignition 3.5.0. Confirme a versão efetiva pela API e
 a disponibilidade do canal. Este projeto não provisiona cluster ou recursos pagos.
+
+## Computador e ferramentas de acesso
+
+O laboratório **não exige um sistema operacional no computador pessoal**. Você pode
+usar Windows, macOS ou Linux e acessar o OpenShift remoto. Os componentes do exercício
+rodam no cluster; os payloads e o Git ficam no serviço externo escolhido.
+
+Escolha onde executar as ferramentas de preparação e validação: no próprio computador
+ou em um terminal remoto com acesso à API e ao Git. Nesse ambiente, os scripts Python
+precisam de Python 3 e `oc`; Git e curl são usados nos passos correspondentes. PyYAML
+é usado somente pelo script opcional de falha. Os dois scripts `.sh` e a suíte de
+testes do kit precisam de Bash. Isso é uma dependência desses auxiliares, não do
+sistema operacional do aluno ou das cargas no OpenShift.
+
+No Windows, você pode usar ferramentas nativas nos passos compatíveis e um ambiente
+com Bash, como WSL ou um terminal remoto, para os `.sh`. Os exemplos de shell usam
+sintaxe POSIX; consulte [a preparação](docs/01-preparacao.md) para os ajustes no PowerShell.
+Não é necessário instalar um cluster local, trocar de sistema ou disponibilizar uma
+VM auxiliar quando usar GitHub para os arquivos externos.
 
 ## Começar
 

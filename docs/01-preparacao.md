@@ -5,22 +5,53 @@ enunciado. Execute os comandos na raiz do clone, salvo indicação contrária.
 
 ## 1. Ferramentas e sessão
 
-Em Linux, incluindo Pop!_OS, tenha Git, Python 3, curl e oc compatível com 4.22.
-Obtenha oc pela página de ferramentas do console ou distribuição oficial da Red Hat;
-não presuma que qualquer pacote chamado oc seja a CLI correta. Instale ferramentas
-faltantes pelo gerenciador da estação, com a autorização necessária. Para PyYAML:
+O sistema operacional do computador pessoal não é requisito do laboratório.
+Windows, macOS e Linux podem acessar o OpenShift remoto. Escolha um ambiente de
+terminal local ou remoto para os auxiliares; as ferramentas precisam estar nesse
+ambiente, sem obrigação de instalá-las todas no computador pessoal.
 
-```bash
-python3 -m venv .venv
-. .venv/bin/activate
-python3 -m pip install PyYAML
+- `oc` compatível com 4.22: inspeção/administração pela API e chamadas dos scripts Python.
+- Git: clone, edição/publicação e conferência de revisão.
+- curl: verificações de conectividade; os testes dentro do cluster usam o curl da
+  imagem/host remoto, não o sistema operacional do computador pessoal.
+- Python 3: preflight, criação do pool e validação fornecidos pelo kit.
+- Bash: somente `prep/serve.sh`, `scripts/evidence.sh` e os testes locais do kit.
+- PyYAML: somente o script de falha opcional, depois de concluir a prova.
+
+Obtenha oc pela página de ferramentas do console ou distribuição oficial da Red Hat,
+para a plataforma onde você vai executá-lo. Não presuma que qualquer pacote chamado
+oc seja a CLI correta. Instale ferramentas faltantes conforme esse ambiente, com a
+autorização necessária. O modo GitHub dispensa o servidor auxiliar e seu serve.sh.
+
+Os exemplos de shell deste roteiro usam sintaxe POSIX. No Windows, use um terminal
+compatível, como WSL ou uma máquina remota, para os scripts Bash. Para comandos
+compatíveis com ferramentas nativas no PowerShell, use `python` se esse for o nome
+do executável instalado. As principais diferenças dos passos iniciais são:
+
+| Operação | Shell POSIX | PowerShell |
+|---|---|---|
+| Copiar o modelo | `cp lab.env.example lab.env` | `Copy-Item lab.env.example lab.env` |
+| Criar diretório | `mkdir -p evidence` | `New-Item -ItemType Directory -Force evidence` |
+| Criar venv opcional | `python3 -m venv .venv` | `python -m venv .venv` |
+| Usar o Python do venv | `.venv/bin/python` | `.venv\Scripts\python.exe` |
+
+Não é obrigatório ativar o venv: chame seu Python diretamente para instalar PyYAML
+e executar o script opcional. Isso evita depender da política de execução de scripts
+do PowerShell. Para inspecionar ferramentas, execute no ambiente escolhido:
+
+```text
 oc version --client
 git --version
 python3 --version
 curl --version
 ```
 
-Use a sessão local do oc. Se faltar autenticação, faça login no próprio terminal;
+Substitua `python3` por `python` quando aplicável. No Windows, use `curl.exe` se
+`curl` resolver para um alias diferente. Não execute `.sh` diretamente no PowerShell.
+A suíte de testes cobre o ambiente descrito em TESTES.md; o kit não afirma que todos
+os auxiliares foram testados nativamente em cada sistema operacional.
+
+Use a sessão do oc no ambiente de terminal escolhido. Se faltar autenticação, faça login no próprio terminal;
 não envie tokens ou senhas à IA. Inspecione sem alterar recursos:
 
 ```bash
