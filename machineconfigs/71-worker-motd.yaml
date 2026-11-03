@@ -11,7 +11,7 @@ spec:
     storage:
       files:
         - path: /etc/motd
-          mode: 444
+          mode: 292
           overwrite: true
           contents:
             source: 'http://files-ex380-support.apps.cluster-v62c8.dyn.redhatworkshops.io/config/openshift.txt'
