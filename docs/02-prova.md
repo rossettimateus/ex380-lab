@@ -177,6 +177,29 @@ de sua autoria. Configure o resultado abaixo; os nomes dos campos podem variar n
 | Destination → Namespace | `lab-gitops` |
 | Namespace do recurso Application | `lab-gitops` |
 
+#### Atenção ao Source → Path
+
+Preencha **Path = `machineconfigs`**, relativo à raiz do Git informado em Repository URL.
+A estrutura publicada nesse repositório deve ser:
+
+```text
+raiz-do-seu-repo/
+└── machineconfigs/
+    ├── seu-primeiro-manifest.yaml
+    └── seu-segundo-manifest.yaml
+```
+
+Use `machineconfigs` sem barra inicial. Não coloque nesse campo a URL completa,
+um caminho do seu computador como `work/candidate/machineconfigs`, nem o caminho
+`config/` dos arquivos de texto. O Argo CD vai ler os YAMLs dentro desse diretório.
+
+| Informação | Onde preencher |
+|---|---|
+| URL do Git dos seus manifests | Application → Source → Repository URL |
+| Branch `main` | Application → Source → Revision |
+| Diretório `machineconfigs` desse Git | Application → Source → Path |
+| URL HTTPS de site.conf ou banner.txt | Fonte do conteúdo do arquivo dentro da respectiva MachineConfig |
+
 Mantenha auto-sync, self-heal e prune automático desativados. Não adicione finalizer
 de exclusão em cascata. O namespace de destino da Application não torna as
 MachineConfigs namespaced: elas continuam sem namespace e afetam nodes pelo pool.

@@ -57,7 +57,9 @@ HTTP_BASE=https://raw.githubusercontent.com/rossettimateus/ex380-lab/main
 
 Somente REPO_URL muda por aluno. HTTP_BASE continua apontando para o conteúdo
 central. Os demais campos de lab.env descrevem seu cluster e suas identidades.
-Na prova, a Application observará main e o caminho machineconfigs do seu repo.
+Na prova, preencha na Application: Repository URL = REPO_URL, Revision = `main`
+e Path = `machineconfigs`, sem barra inicial e relativo à raiz desse Git.
+O diretório local `work/candidate/` não faz parte do Path no Argo CD.
 Nenhum YAML de resposta é fornecido por esta configuração.
 
 Confira o commit inicial publicado:
