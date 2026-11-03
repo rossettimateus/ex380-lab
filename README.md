@@ -1,6 +1,6 @@
 # GitOps: configurar /etc/motd nos workers
 
-## Seu exercício
+## Exercício
 
 Escreva **uma MachineConfig** para colocar o texto de [config/motd.txt](config/motd.txt)
 em `/etc/motd` nos **workers**, com proprietário root:root e permissão **0444**
