@@ -1,0 +1,17 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker
+  name: 71-worker-motd
+spec:
+  config:
+    ignition:
+      version: 3.5.0
+    storage:
+      files:
+        - path: /etc/motd
+          mode: 292
+          overwrite: true
+          contents:
+            source: 'data:text/plain;charset=utf-8;base64,b3BlbnNoaWZ0Cg=='
