@@ -1,1 +1,1 @@
-Bem-vindo ao laboratorio GitOps.
+http://files-ex380-support.apps.cluster-v62c8.dyn.redhatworkshops.io/config/openshift.txt
