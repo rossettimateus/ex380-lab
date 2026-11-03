@@ -65,7 +65,8 @@ necessário repeti-la a cada comando. Nome admin não comprova cluster-admin.
 ### Material e payloads: repositório central
 
 Use o clone de https://github.com/rossettimateus/ex380-lab.git para consultar o
-roteiro e executar os auxiliares. Não faça fork nem replique o conteúdo do kit.
+roteiro e executar os auxiliares. Forks e adaptações também são possíveis; o fluxo
+de referência mantém os materiais e os payloads vinculados ao repositório central.
 Os dois arquivos são servidos pelo próprio repositório, via HTTPS raw.
 
 ### Manifests: repo de escrita do aluno
@@ -95,9 +96,12 @@ ou espaços no fim. LAB_API deve corresponder ao servidor atual do oc.
 
 Mantenha o repo de manifests público durante o exercício e a recuperação. Os nodes
 e pods precisam de DNS e saída HTTPS para GitHub e raw.githubusercontent.com.
-Se o acesso ao conteúdo central falhar, investigue a rede e registre o bloqueio;
-não substitua por cópias locais ou serviços no cluster. Não execute prep/serve.sh,
-não é necessário servidor próprio. Não publique lab.env, work/ ou credenciais.
+Se o acesso ao conteúdo central falhar, investigue a rede e registre o bloqueio.
+Outra hospedagem externa é uma adaptação possível: ajuste HTTP_BASE e repita os
+testes de conteúdo e conectividade. Serviços dentro do cluster não atendem ao
+requisito de disponibilidade externa durante recuperação. No fluxo recomendado,
+não é necessário executar prep/serve.sh ou manter servidor próprio.
+Não publique lab.env, work/ ou credenciais.
 
 ## 4. OAuth e canal
 

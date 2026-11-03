@@ -41,7 +41,7 @@ um ambiente que forneça suas dependências. Veja [a preparação](docs/01-prepa
 
 2. Siga [a preparação completa](docs/01-preparacao.md), incluindo
    [a configuração do seu repositório de manifests](docs/00-repositorio-do-aluno.md).
-   Ele recebe **somente os manifests que você escrever**, sem fork ou cópia do kit.
+   Nesse fluxo, ele recebe os manifests que você escrever; não é necessário copiar o kit.
 3. Preencha `lab.env`: `REPO_URL` aponta para seu repo de manifests; `HTTP_BASE`
    já aponta para os arquivos deste repositório e deve ser mantido.
 4. Após os checks passarem, abra [o enunciado](docs/02-prova.md). Tempo sugerido:
@@ -78,7 +78,8 @@ rossettimateus/ex380-lab / config/ -> HTTPS raw --------------------> download n
 ```
 
 Enunciado, instruções, scripts e payloads permanecem neste repositório. Seu repo
-é apenas o destino dos manifests que você criar; não copie o conteúdo do kit.
+é o destino dos manifests que você criar. O fluxo recomendado mantém os materiais e
+os payloads referenciados aqui, sem precisar duplicá-los.
 
 ```text
 REPO_URL=https://github.com/SEU-USUARIO/ex380-meus-manifests.git
@@ -93,6 +94,10 @@ Os nodes baixam os arquivos diretamente pelos endereços:
 As cópias em `http/` servem apenas à comparação local pelos verificadores.
 Não é necessário servidor próprio, aplicação ou GitHub Pages. Mantenha seu repo
 de manifests acessível durante o exercício e a recuperação.
+
+Forks, cópias e adaptações são bem-vindos. Para seguir o roteiro de referência,
+recomendamos manter `HTTP_BASE` apontando para este repositório e consultar aqui
+as instruções atualizadas. Fazer um fork não exige mudar os URLs dos payloads.
 
 ## Estrutura e limites
 

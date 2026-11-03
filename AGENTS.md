@@ -39,13 +39,17 @@ apague rendered configs, remova PDBs/taints ou use force files para simular conv
 
 ## Dados e hospedagem
 
-- Clone o material de https://github.com/rossettimateus/ex380-lab.git, sem fork.
+- Use https://github.com/rossettimateus/ex380-lab.git como referência do material.
   Mantenha os remotes do kit. Prepare em work/candidate/ um Git separado, público,
   autorizado pelo aluno, que receberá somente machineconfigs/ com as respostas dele.
-  Não copie enunciado, scripts, payloads ou o kit para esse repo.
+  O fluxo recomendado dispensa copiar o kit para esse repo. Forks, cópias e
+  adaptações são permitidos; não os proíba nem os trate como erro de preparação.
 - REPO_URL aponta para o repo de manifests do aluno, branch main e path machineconfigs.
   HTTP_BASE permanece https://raw.githubusercontent.com/rossettimateus/ex380-lab/main.
-  Não re-hospede os payloads em outro repo, VM, Pod, Service ou Route.
+  Recomende manter os payloads no repositório central, inclusive se a pessoa fizer
+  fork do kit. Se ela optar por outra hospedagem externa, explique a adaptação
+  necessária e repita os testes de conectividade e igualdade do conteúdo.
+  Serviços dentro do cluster não atendem ao requisito de hospedagem externa.
   Siga docs/00-repositorio-do-aluno.md; não presuma autenticação de escrita.
 - Antes de publicar, confirme autorização para o repo e conteúdo concretos.
   Nunca faça commit de lab.env, work/, evidências, credenciais ou kubeconfigs.

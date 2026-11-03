@@ -3,7 +3,9 @@
 O material do exercício, as instruções e os payloads HTTPS ficam em
 https://github.com/rossettimateus/ex380-lab. Você precisa de outro repo apenas
 para publicar os manifests que escrever e permitir que o Argo CD os leia.
-Não faça fork nem copie o kit ou os arquivos de config/ para esse repo.
+Não é necessário fazer fork ou copiar o kit para seguir este fluxo. Se preferir
+fazer um fork ou adaptar o material, fique à vontade; recomendamos manter os
+payloads referenciados no repositório central, como nos exemplos abaixo.
 
 ## 1. Criar o destino de escrita
 
