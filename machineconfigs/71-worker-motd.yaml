@@ -1,0 +1,18 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker
+  name: 71-worker-motd
+spec:
+  config:
+    ignition:
+      version: 3.5.0
+    storage:
+      files:
+        - path: /etc/motd
+          mode: 444
+          overwrite: true
+          contents:
+            source: 'https://github.com/rossettimateus/ex380-lab/blob/main/config/motd.txt'
+
