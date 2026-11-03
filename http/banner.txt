@@ -1,2 +1,0 @@
-EX380 | OpenShift GitOps + MachineConfig
-Ambiente isolado de treinamento. Sem dados de producao.
