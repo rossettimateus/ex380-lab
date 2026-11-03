@@ -1,25 +1,24 @@
 #!/usr/bin/env python3
+"""Baseline antes do aluno executar RBAC, conexão Git, Application e Sync."""
 from common import *
 import urllib.request
-D=env(); n=guard(D)
-assert cond(n,'Ready')=='True', 'Node não Ready'
+
+D=env(); guard(D)
 for p in obj('mcp')['items']:
-    assert cond(p,'Degraded')=='False' and cond(p,'Updating')=='False', 'Pool não estabilizado: '+p['metadata']['name']
-assert obj('clusteroperator','machine-config')['status']['conditions'], 'MCO ausente'
-for c in obj('clusteroperator')['items']:
-    assert cond(c,'Available')=='True' and cond(c,'Degraded')=='False' and cond(c,'Progressing')=='False', 'ClusterOperator não estabilizado: '+c['metadata']['name']
-workers=obj('node')['items']
-assert sum('node-role.kubernetes.io/worker' in w['metadata']['labels']
-           and not any('node-role.kubernetes.io/'+r in w['metadata']['labels'] for r in ['master','control-plane'])
-           and 'CoreOS' in w['status']['nodeInfo']['osImage'] for w in workers)>=2, 'Use no mínimo dois workers RHCOS dedicados'
-for f in ['site.conf','banner.txt']:
-    u=D['HTTP_BASE'].rstrip('/')+'/config/'+f
-    with urllib.request.urlopen(u,timeout=15) as r: actual=r.read()
-    assert actual==(ROOT/'http'/f).read_bytes(), 'HTTP incorreto: '+f
-    # Teste no network namespace do host, sem escrever no host.
-    out=oc('debug','node/'+D['LAB_NODE'],'--quiet','--','chroot','/host','curl','-fsS','--max-time','15',u)
-    assert out==(ROOT/'http'/f).read_text().strip(), 'Node não obteve o payload esperado'
-for f in ['site.conf','banner.txt']:
-    oc('debug','node/'+D['LAB_NODE'],'--quiet','--','chroot','/host','test','!','-e','/etc/ex380-lab/'+f)
-print(oc('get','packagemanifest','openshift-gitops-operator','-n','openshift-marketplace','-o','jsonpath={.status.channels[*].name}'))
-print('PASS: conectividade HTTP e baseline. Confirme canal gitops-1.21, capacidade, OAuth e Git antes da prova.')
+    assert cond(p,'Updated')=='True' and cond(p,'Updating')=='False' and cond(p,'Degraded')=='False',p['metadata']['name']
+for c in obj('co')['items']:
+    assert cond(c,'Available')=='True' and cond(c,'Progressing')=='False' and cond(c,'Degraded')=='False',c['metadata']['name']
+assert obj('argocd',D.get('ARGOCD_NAME','openshift-gitops'),D.get('ARGOCD_NAMESPACE','openshift-gitops'))['status']['phase']=='Available'
+assert D['LAB_USER'] in obj('group','gitops-admins').get('users',[])
+assert D['HTTP_BASE'].startswith('http://')
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self,*args): return None
+opener=urllib.request.build_opener(NoRedirect)
+for file in ['site.conf','banner.txt']:
+    url=D['HTTP_BASE'].rstrip('/')+'/config/'+file
+    with opener.open(url,timeout=20) as response:
+        assert response.status==200 and response.read()==(ROOT/'http'/file).read_bytes()
+    out=oc('debug','node/'+D['LAB_NODE'],'--quiet','--','chroot','/host','curl','-fsS','--max-time','30',url)
+    assert out==(ROOT/'http'/file).read_text().strip()
+    oc('debug','node/'+D['LAB_NODE'],'--quiet','--','chroot','/host','test','!','-e','/etc/ex380-lab/'+file)
+print('PASS: suporte disponível e baseline saudável. Testar também outros workers e um pod.')

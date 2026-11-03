@@ -1,0 +1,133 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ex380-support
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: files
+  namespace: ex380-support
+data:
+  site.conf: '[site]
+
+    name=ex380-lab
+
+    environment=training
+
+    revision=1
+
+    '
+  banner.txt: 'EX380 | OpenShift GitOps + MachineConfig
+
+    Ambiente isolado de treinamento. Sem dados de producao.
+
+    '
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: files
+  namespace: ex380-support
+spec:
+  replicas: 2
+  selector:
+    matchLabels: &id001
+      app: ex380-files
+  template:
+    metadata:
+      labels: *id001
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/worker
+                operator: Exists
+              - key: node-role.kubernetes.io/master
+                operator: DoesNotExist
+              - key: node-role.kubernetes.io/control-plane
+                operator: DoesNotExist
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels: *id001
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: http
+        image: registry.access.redhat.com/ubi9/python-312@sha256:d0518dd59bd42e13e33ba69c9bc2ebdf2de277f5c3e3b8072fc69b3b92ac37b7
+        command:
+        - python3
+        - -m
+        - http.server
+        - '8080'
+        - --bind
+        - 0.0.0.0
+        - --directory
+        - /srv
+        ports:
+        - name: http
+          containerPort: 8080
+        env:
+        - name: PYTHONDONTWRITEBYTECODE
+          value: '1'
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 250m
+            memory: 192Mi
+        readinessProbe:
+          httpGet:
+            path: /config/site.conf
+            port: http
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        volumeMounts:
+        - name: files
+          mountPath: /srv/config
+          readOnly: true
+      volumes:
+      - name: files
+        configMap:
+          name: files
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: files
+  namespace: ex380-support
+spec:
+  selector:
+    app: ex380-files
+  ports:
+  - name: http
+    port: 8080
+    targetPort: http
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: files
+  namespace: ex380-support
+spec:
+  to:
+    kind: Service
+    name: files
+  port:
+    targetPort: http
