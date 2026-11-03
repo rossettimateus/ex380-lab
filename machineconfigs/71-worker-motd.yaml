@@ -14,5 +14,5 @@ spec:
           mode: 444
           overwrite: true
           contents:
-            source: 'https://github.com/rossettimateus/ex380-lab/blob/main/config/motd.txt'
+            source: 'http://files-ex380-support.apps.cluster-v62c8.dyn.redhatworkshops.io/config/openshift.txt'
 
