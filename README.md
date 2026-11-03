@@ -55,6 +55,10 @@ um ambiente que forneça suas dependências. Veja [a preparação](docs/01-prepa
 O clone deste kit e o repo de manifests são diretórios Git separados. Não troque
 seus remotes nem publique as respostas no repositório do material.
 
+Já está dentro do Argo CD? Vá às etapas C e E do [enunciado](docs/02-prova.md):
+primeiro confira repositório e AppProject; depois use a
+[tabela de criação da Application](docs/02-prova.md#e1-criar-a-application).
+
 ## Preparar com ajuda de uma IA
 
 Abra seu clone em um agente com terminal e envie:
