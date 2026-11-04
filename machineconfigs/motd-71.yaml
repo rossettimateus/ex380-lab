@@ -15,3 +15,5 @@ spec:
           overwrite: true
           contents:
             source: http://files-ex380-support.apps.cluster-v62c8.dyn.redhatworkshops.io/config/openshift.txt
+            verification:
+              hash: 769daf10b2de4a874f616593071b5d21d35be683cac1a49e44f877158330ef2b
